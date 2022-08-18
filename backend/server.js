@@ -14,8 +14,9 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 
-// => /tickets route has been specified in the middleware so the '/' ca be used in all of the http request methods in routes. 
+// => /tickets and users route has been specified in the middleware so the '/' can be used in all of the http request methods in routes. 
 app.use('/tickets', require('./routes/ticketRoutes'));
+app.use('/users', require('./routes/userRoutes'));
 
 app.use(errorHandler);
 

@@ -3,7 +3,7 @@ const asyncHandler = require('express-async-handler');
 const Tickets = require('../models/ticketModel')
 
 // @desc Get Tickets
-// @route GET /tickets
+// @route GET api/tickets
 // @access private
 
 const getTickets = asyncHandler(async (req,res) => {
@@ -13,7 +13,7 @@ const getTickets = asyncHandler(async (req,res) => {
 })
 
 // @desc Add Ticket
-// @route POST /tickets
+// @route POST api/tickets
 // @access private
 
 const setTickets = asyncHandler(async (req,res) => {
@@ -28,7 +28,7 @@ const setTickets = asyncHandler(async (req,res) => {
 })
 
 // @desc Update Ticket
-// @route PUT /tickets/:id
+// @route PUT api/tickets/:id
 // @access private
 
 const updateTickets = asyncHandler(async (req,res) => {
@@ -45,7 +45,7 @@ const updateTickets = asyncHandler(async (req,res) => {
 })
 
 // @desc Delete Ticket
-// @route DELETE /tickets
+// @route DELETE api/tickets
 // @access private
 
 const deleteTickets = asyncHandler(async (req,res) => {
