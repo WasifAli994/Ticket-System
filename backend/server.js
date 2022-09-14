@@ -1,5 +1,6 @@
 const express = require('express');
 const colors = require('colors');
+const bcrypt = require('bcryptjs');
 require('dotenv').config();
 const connectDB = require('./config/db');
 const {errorHandler} = require('./middleware/errorMiddleware');
