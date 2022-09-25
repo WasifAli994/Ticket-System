@@ -1,6 +1,7 @@
 const asyncHandler = require('express-async-handler');
 
 const Tickets = require('../models/ticketModel')
+const User = require('../models/userModel')
 
 // @desc Get Tickets
 // @route GET api/tickets
@@ -8,7 +9,7 @@ const Tickets = require('../models/ticketModel')
 
 const getTickets = asyncHandler(async (req,res) => {
     
-    const tickets = await Tickets.find();
+    const tickets = await Tickets.find({user: req.user.id});
     res.json(tickets).status(200);
 })
 
@@ -22,10 +23,12 @@ const setTickets = asyncHandler(async (req,res) => {
         throw new Error("Please add a text field!");
     }
     const tickets = await Tickets.create({
-        text: req.body.text
+        text: req.body.text,
+        user: req.user.id
     })
     res.json(tickets).status(200);
 })
+
 
 // @desc Update Ticket
 // @route PUT api/tickets/:id
@@ -38,6 +41,19 @@ const updateTickets = asyncHandler(async (req,res) => {
     if(!tickets){
         res.status(400)
         throw new Error('Requested Ticket Not found!');
+    }
+
+    const user = await User.findById(req.user.id)
+    //check for user
+    if(!user){
+        res.status(401)
+        throw new Error('User not Found!')
+    }
+
+    //To make sure the logged in user matches the goal user
+    if(tickets.user.toString() !== user.id){
+        res.status(401)
+        throw new Error('User not authorized!')
     }
 
     const updatedTicket = await Tickets.findByIdAndUpdate(req.params.id,req.body,{new: true});
@@ -55,6 +71,19 @@ const deleteTickets = asyncHandler(async (req,res) => {
     if(!tickets){
         res.status(400)
         throw new Error('Requested Ticket Not found!')
+    }
+
+    const user = await User.findById(req.user.id)
+    //check for user
+    if(!user){
+        res.status(401)
+        throw new Error('User not Found!')
+    }
+
+    //To make sure the logged in user matches the goal user
+    if(tickets.user.toString() !== user.id){
+        res.status(401)
+        throw new Error('User not authorized!')
     }
 
     await tickets.remove();
